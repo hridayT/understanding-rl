@@ -1,6 +1,8 @@
 > Reinforcement Learning as the study and modelling of decision making. 
 
-#### Crucial components of RL
+### Crucial components of RL
+---
+
 - No direct supervision --> only a reward signal which may operate on the process and/or the outcome
 - Often delayed feedback
     - The intermediate steps / actions / predictions / tokens do not immediately receive a reward
@@ -29,7 +31,8 @@ Goal: Select actions to maximise total future reward
 - As actions can have long term consequences and rewards can be delayed, the idea of maximising total reward does not immediately devolve into a greedy search for reward (immediate gains). 
 - Occasionally better to explore now and exploit later for greater total reward
 
-#### Key Constructs and notations
+### Key Constructs and notations
+---
 
 Note: Gets a little messy here as jargon from the field of LLMs and agents today and the study of RL at large appear to depart a little from one another. All comes together later ( I think ). 
 
@@ -56,7 +59,8 @@ History: Sequence of observations, actions, rewards (also the context)
 
 Note: What happens next depends on the context / history
 
-#### State
+### State
+---
 
 This begins to get tricky but will be clear in a bit. 
 
@@ -96,5 +100,54 @@ Examples of Markov States
 - The history is Markov as well as that is what the env uses to emit observations, rewards, & get to the next state? 
     - What about elements of the env the model has not explored yet and thus the info present in its history is incomplete? 
     - Does this include info available to the model which has not yet been accessed? 
+    - As the set of actions the model can take include theactions of further inspection, optimal states still remain in reach given the history
 
+★ The agent state you build is critical to its ability to model the world in it
+
+> The agent state vs the agent's policy (state to action)?
+
+Observability of Envs and Impact on States:
+- Fully Observable Environments: agent directlt observes env state:
+$$O_t = S_t^a = S_t^e = S_t$$
+
+Markov Decision Process (MDP) $\rightarrow$ Full observability of markov states
+
+- Partially Observable Environments: The agent indirectly observes the env. Partial info. 
+$$S_t^a \neq S_t^e$$
+
+Partially Observable Markov Decision Process (POMDP) $\rightarrow$ Full observability of markov states
+
+Here the agent must construct its own state representation:
+- Vanilla Complete History: $S_t^a = H_t$
+- Bayesian / Probabilistic: $S_t^a = (P[S_t^e = S_1],...,P[S_t^e = S_n])$
+- RNN: model the state transformation: $S_t^a = \sigma(S_{t-1}^aW_s + O_tW_o)$
+
+### Components of an RL Agent
+---
+
+Core Components:
+- <u>**Policy**</u>: agent's behaviour function $\rightarrow$ maps state to action
+- <u>**Value Function**</u>: measure of how good a given state and action are
+- <u>**Model**</u>: agent's representation of the env
+
+> ★ Policy
+
+→ Maps State to Action  
+→ At large:  
+$\quad$ → Deterministic: $a = \pi(s)$  
+$\quad$ → Stochastic: helps explore more of the state space via non-determistic actions, $\pi(a|s) = P[A=a|S=s]$
+
+> ★ Value Function
+
+→ Prediction / expectation of future reward
+→ As it gives you expectation of future reward, you can use it to choose between actions
+→ The expected total reward is dependent on the policy
+
+$$V_{\pi}(s) = E_{\pi}[R_t + \gamma R_{t+1} + \gamma R_{t+2} + ... | S_t = s]$$
+
+$\rightarrow$ expectation of total future reward given the current state and policy. 
+
+> Why do you need a policy $S \rightarrow A$ & a value function, value of $S$? Shouldn't the policy $\pi$ encode the understanding of action choices and vice versa? Yes! As revealed later. 
+
+> ★ Model
 
