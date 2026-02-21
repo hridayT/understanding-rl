@@ -115,7 +115,7 @@ Markov Decision Process (MDP) $\rightarrow$ Full observability of markov states
 - Partially Observable Environments: The agent indirectly observes the env. Partial info. 
 $$S_t^a \neq S_t^e$$
 
-Partially Observable Markov Decision Process (POMDP) $\rightarrow$ Full observability of markov states
+Partially Observable Markov Decision Process (POMDP)
 
 Here the agent must construct its own state representation:
 - Vanilla Complete History: $S_t^a = H_t$
@@ -217,3 +217,5 @@ $\rightarrow$ Model Based RL: explicit modelling of transition / env dynamic and
 ★ Exploitation maximises reward given known info  
 
 > Prediction and Control: Prediction evaluates the future given a policy, Control optimises the future to find the best policy
+
+This could be tied back via credit assignment. Having completed an action / episode you receive a reward. At this point you can predict all of the ways each state could have gone and compare that to where you ended up given the action at that state. This could tell you something about the incremental value of that action which in turn gets you some amount of control. 
