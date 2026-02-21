@@ -151,3 +151,69 @@ $\rightarrow$ expectation of total future reward given the current state and pol
 
 > ★ Model
 
+→ Attempts to predict what the env will do next.  
+→ Transition Model: predicts the next state  
+→ Reward Model: predicts the next immediate reward (this is the reward model from RLHF where to understand the env it learns from human feedback and then can mimick the env).  
+
+State Transition Probability Function:
+$$P_{ss'}^a = P[S_{t+1}=s'|S_t=s,A_t=a]$$
+
+Reward (given Action $a$ at State $s$):
+$$R_s^a = E[R_{t+1}|S_t=s,A_t=a]$$
+
+$\rightarrow$ Model Free RL: no explicit modelling of transition and reward
+$\rightarrow$ Model Based RL: explicit modelling of transition / env dynamic and reward 
+
+### Maze Example
+---
+
+- Each cell / position is a state. 
+- Optimal policy $\pi(s)$ points in the direction of the shortest path to the goal
+- Ideal value function $V_{\pi}(s)$ represents the number of steps to the final goal (negative reward as steps are to be minimized)
+- What about the model? The agent may have an internal model of the env (maze)
+    - Transition / Dynamics: how actions tend to change the state
+    - Rewards: reward given a state
+    - Note: The agent's internal model may be imperfect
+
+> Notice how the optimal Policy and the ideal Value Function are identical in the above scenario. If you have a good enough value function, that is your policy in a sense.
+
+### Taxonomy of RL Agents
+---
+
+- Value Based
+    - No policy (implicit)
+    - Value Function
+- Policy Based
+    - No Value function
+- Actor Critic
+    - Policy and Value function
+    - Value function helps with credit assignment (Advantage computation)
+    - 2x Memory
+- Model Free
+    - Policy and/or Value function
+    - No Modelling of env
+- Model Based
+    - Policy and/or Value function
+    - Model
+
+### On RL and Planning
+---
+
+> Two fundamental problems in sequential decision making. 
+
+- The RL Problem:
+    - The env is initially unknown
+    - The agent interacts with the env
+    - Improves policy
+- The Planning Problem:
+    - A **model** of the env is known (simulation?)
+    - The agent works with the model (with no external interaction)
+    - The agent improves its policy
+
+★ RL is like trial and error  
+★ Explore vs exploit
+★ Optimal policies can only be discovered via exploration. Too much exploration and no policy gets implemented. Reward thins out. 
+★ Exploration tells you more about the env
+★ Exploitation maximises reward given known info
+
+> Prediction and Control: Prediction evaluates the future given a policy, Control optimises the future to find the best policy
