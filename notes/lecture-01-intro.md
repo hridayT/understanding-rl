@@ -155,10 +155,10 @@ $\rightarrow$ expectation of total future reward given the current state and pol
 → Transition Model: predicts the next state  
 → Reward Model: predicts the next immediate reward (this is the reward model from RLHF where to understand the env it learns from human feedback and then can mimick the env).  
 
-State Transition Probability Function:
+State Transition Probability Function:  
 $$P_{ss'}^a = P[S_{t+1}=s'|S_t=s,A_t=a]$$
 
-Reward (given Action $a$ at State $s$):
+Reward (given Action $a$ at State $s$):  
 $$R_s^a = E[R_{t+1}|S_t=s,A_t=a]$$
 
 $\rightarrow$ Model Free RL: no explicit modelling of transition and reward
@@ -211,9 +211,9 @@ $\rightarrow$ Model Based RL: explicit modelling of transition / env dynamic and
     - The agent improves its policy
 
 ★ RL is like trial and error  
-★ Explore vs exploit
-★ Optimal policies can only be discovered via exploration. Too much exploration and no policy gets implemented. Reward thins out. 
-★ Exploration tells you more about the env
-★ Exploitation maximises reward given known info
+★ Explore vs exploit  
+★ Optimal policies can only be discovered via exploration. Too much exploration and no policy gets implemented. Reward thins out.   
+★ Exploration tells you more about the env  
+★ Exploitation maximises reward given known info  
 
 > Prediction and Control: Prediction evaluates the future given a policy, Control optimises the future to find the best policy
