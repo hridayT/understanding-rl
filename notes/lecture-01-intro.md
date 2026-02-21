@@ -55,3 +55,46 @@ An interesting way to look at this:
 History: Sequence of observations, actions, rewards (also the context)
 
 Note: What happens next depends on the context / history
+
+#### State
+
+This begins to get tricky but will be clear in a bit. 
+
+The <u>**State**</u> is a summary of the information user to dewtermine what happens next. In a sense this is circular, it is the current state and the next state arises out of it + the actions of the agent and the response to the env. 
+
+The State is a function of the history
+
+$$S_t = f(H_t)$$
+
+$S_t^e$: State of the env  
+$S_t^a$: Internal representation of the state from the agent
+
+As the entire state of the env (the full state of the agent's world / surroundings) is not fully visible / accessible to the agent, the agent thuys works on its representation. 
+
+Note: Even if some of the state were known, some of it would be irrelevant to the decisions the agent needs to make. Not just distractors, just purely irrelevant artifacts. 
+
+The internal state for the agent is the state we are most concerned with here. 
+
+> In the tool use scenario, the state of the world at any instant can be inpsected via tool calls. What is the "internal representation" here? The context? Perhaps what is known to the agent. 
+
+★ You can design the function which is employed to convert the history of actions, rewards, and observations, into a useful state. 
+
+$$S_t = f(H_t), \quad \text{where} \; H_t = [A_1, O_1, R_1, ..., A_t, O_t, R_t]$$
+
+★ Markov State (Property)
+$$\text{A state $S_t$ is Markov iff} \quad P[S_{t+1}|S_t] = P[S_{t+1}|S_1,...,S_t] \\
+\text{i.e. the current state captures all you need to know to capture the full state space of possible future states}$$
+
+> Context Window vs State: State is a function of context and the context is the history. So in the vanilla case of no context management the context is the LLM's history. 
+
+What the Markov property really says is that if you take decisions based on S_t, those decisions can still be optimal. You still have to figure out what actions to take and how to get to the optimal states. 
+
+Example of a state which is not markov: insufficient info. Moving object and all you know is the position. You can't take decisions on manoeuvres without knowing velocity / momentum, etc. 
+
+Examples of Markov States
+- The env state is Markov as that is the state the env is in and all future states arise out of it. 
+- The history is Markov as well as that is what the env uses to emit observations, rewards, & get to the next state? 
+    - What about elements of the env the model has not explored yet and thus the info present in its history is incomplete? 
+    - Does this include info available to the model which has not yet been accessed? 
+
+
