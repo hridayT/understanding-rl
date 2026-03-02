@@ -79,5 +79,38 @@ Changing $\gamma$ can thus alter the outlook of agiven state significantly.
 ### Towards the Bellman Equation
 
 > The value function (expectation of total future reward) can be decomposed into two parts:  
+- Immediate Reward $R_{t+1}
+- Discounted value of following states / future reward, $\; \gamma v(S_{t+1})$
+
+$$
+\begin{aligned}
+v_{\pi}(s) &= E[G_t | S_t = s] \\
+     &= E[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1} | S_t = s] \\
+     &= E[R_{t+1} + \gamma (R_{t+2} + \gamma R_{t+3} + ...) | S_t = s] \\
+     &= E[R_{t+1} + \gamma G_{t+1} | S_t = s] \\
+     &= E[R_{t+1}] + E[\gamma G_{t+1} | S_t = s] \\
+     &= E[R_{t+1}] + \gamma E[ G_{t+1} | S_t = s] \\
+     &= E[R_{t+1}] + \gamma E[E[ G_{t+1} | S_t = s]] \quad \text{Law of iterated expectations} \\
+     &= E[R_{t+1}] + \gamma E[ V(S_{t+1}) | S_t = s] \\
+     &= E[R_{t+1} + \gamma V(S_{t+1}) | S_t = s] \quad \text{Recursive and later opens the door to iterations for dynamic programming}\\
+\end{aligned}
+$$
+
+### Bellman Equation for MRPs
+
+$$v(s) = E[R_{t+1} + \gamma V(s_{t+1}) | S_t = s]$$
+
+$\rightarrow$ This is akin to taking a step forward and understanding the value at that step. A lookahead. 
+$\rightarrow$ As many steps are possible in the next step and we have the state transition probability function, 
+
+$$v(s) = R_{t+1} + \sum_{s' \in S} P_{ss'}v(s')$$
+
+The one step lookehead. 
+
+### Bellman in Matrix form, vector representation
+
+
+
+
 
 
