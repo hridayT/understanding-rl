@@ -109,6 +109,32 @@ The one step lookehead.
 
 ### Bellman in Matrix form, vector representation
 
+ $$V = R + \gamma PV$$
+
+$$
+\begin{pmatrix} V(1) \\ \vdots \\ V(n) \end{pmatrix} = \begin{pmatrix} R(1) \\ \vdots \\ R(n) \end{pmatrix} + \gamma 
+\begin{pmatrix} P_{11} & \cdots & P_{1n} \\ \vdots & \ddots & \vdots \\ P_{n1} & \cdots & P_{nn} \end{pmatrix}
+\begin{pmatrix} V(1) \\ \vdots \\ V(n) \end{pmatrix}
+$$
+
+$$\begin{aligned} 
+V(1) &= R(1) + \gamma [P_{11}V(1) + P_{12}V(2) + ... + P_{1n}V(n)] \\
+&= R(1) + \gamma [\sum_{k=0}^{n-1}P_{1 k+1}V(k+1)]
+\end{aligned}
+$$
+
+### DP Refresh: Bellman Ford for shortest distance
+
+> Shortest distance between ane 2 vertices in a weighte dgraph (can handle negative weights)  
+
+$$d[v] = min_{u \in N(v)}(d[v], d[u] + d[u,v])$$
+
+This update in Bellman Ford is carried out for each vertext $v \in V(G)$ in each iteration and you iterate $|V| - 1$ times such that by then all optimal distances have been discovered. 
+
+> Bellman Equation
+
+$$V(s) = e[R_{t+1} + \gamma V(S_{t+1}) | S_t = s]$$
+
 
 
 
