@@ -4,7 +4,7 @@
 
 - The Markov Property: 
 
-$$\text{A state is markov iff} \quad P[S_{t+1}|S_t] = P[S_{t+1}|S_1,S_2,...,S_t]$$
+$$\text{A state is markov iff} \quad P[S_{t+1}\mid S_t] = P[S_{t+1}\mid S_1,S_2,...,S_t]$$
 
 - Memoryless in a way: the future is independent of the past given the present
 
@@ -19,7 +19,7 @@ $\rightarrow$ Partially observable problems can be converted into MDPs
 ### State Transition Probability Matrix
 
 For any set of states with the Markov property, the probability of transition from State $s$ to $s'$ can be defined via the state transition probability function:
-$$P_{ss'} = P[S_{t+1} = s'|S_t = s]$$
+$$P_{ss'} = P[S_{t+1} = s'\mid S_t = s]$$
 
 This then leads to a state transition probability matrix for all state pairs (each row sums to 1):
 $$P = \begin{pmatrix} P_{11} & \cdots & P_{1n} \\ \vdots & \ddots & \vdots \\ P_{n1} & \cdots & P_{nn} \end{pmatrix}$$
@@ -35,7 +35,7 @@ $$\rightarrow \sum_{i=1}^{n}P_{xi} = 1, \forall x \in [1,n] $$
 
 > **Defn:** A Markov Process (or Markov Chain) is a tuple $(S,P)$ where:
 > S: A finite set of states
-> P: State transition Probability functiopn / Matrix such that $P_{ss'} = P[S_{t+1} = s'|S_t = s]$
+> P: State transition Probability functiopn / Matrix such that $P_{ss'} = P[S_{t+1} = s'\mid S_t = s]$
 
 While $(S,P)$ lacks actions and rewards, it captures the dynamics of the env. 
 
@@ -48,7 +48,7 @@ $\rightarrow$ Sampling from the dynamics you can create variable length sequence
 > A Markov Process with value judgement --> How good is it to be in each state?
 
 $$MRP = (S,P,R,\gamma) \quad \text{where} \\
-\; R \; \text{is an "immediate" reward function} \quad R_x = E[R_{t+1}|S_t = s] \\
+\; R \; \text{is an "immediate" reward function} \quad R_x = E[R_{t+1}\mid S_t = s] \\
 \gamma \text{is a discount factor} \quad \gamma \in [0,1]$$
 
 - What you really want to know is not just the immediate reward but the total expected future reward from that state  
@@ -84,21 +84,21 @@ Changing $\gamma$ can thus alter the outlook of agiven state significantly.
 
 $$
 \begin{aligned}
-v_{\pi}(s) &= E[G_t | S_t = s] \\
-     &= E[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1} | S_t = s] \\
-     &= E[R_{t+1} + \gamma (R_{t+2} + \gamma R_{t+3} + ...) | S_t = s] \\
-     &= E[R_{t+1} + \gamma G_{t+1} | S_t = s] \\
-     &= E[R_{t+1}] + E[\gamma G_{t+1} | S_t = s] \\
-     &= E[R_{t+1}] + \gamma E[ G_{t+1} | S_t = s] \\
-     &= E[R_{t+1}] + \gamma E[E[ G_{t+1} | S_t = s]] \quad \text{Law of iterated expectations} \\
-     &= E[R_{t+1}] + \gamma E[ V(S_{t+1}) | S_t = s] \\
-     &= E[R_{t+1} + \gamma V(S_{t+1}) | S_t = s] \quad \text{Recursive and later opens the door to iterations for dynamic programming}\\
+v_{\pi}(s) &= E[G_t \mid  S_t = s] \\
+     &= E[\sum_{k=0}^{\infty}\gamma^k R_{t+k+1} \mid  S_t = s] \\
+     &= E[R_{t+1} + \gamma (R_{t+2} + \gamma R_{t+3} + ...) \mid  S_t = s] \\
+     &= E[R_{t+1} + \gamma G_{t+1} \mid  S_t = s] \\
+     &= E[R_{t+1}] + E[\gamma G_{t+1} \mid  S_t = s] \\
+     &= E[R_{t+1}] + \gamma E[ G_{t+1} \mid  S_t = s] \\
+     &= E[R_{t+1}] + \gamma E[E[ G_{t+1} \mid  S_t = s]] \quad \text{Law of iterated expectations} \\
+     &= E[R_{t+1}] + \gamma E[ V(S_{t+1}) \mid  S_t = s] \\
+     &= E[R_{t+1} + \gamma V(S_{t+1}) \mid  S_t = s] \quad \text{Recursive and later opens the door to iterations for dynamic programming}\\
 \end{aligned}
 $$
 
 ### Bellman Equation for MRPs
 
-$$v(s) = E[R_{t+1} + \gamma V(s_{t+1}) | S_t = s]$$
+$$v(s) = E[R_{t+1} + \gamma V(s_{t+1}) \mid  S_t = s]$$
 
 $\rightarrow$ This is akin to taking a step forward and understanding the value at that step. A lookahead. 
 $\rightarrow$ As many steps are possible in the next step and we have the state transition probability function, 
@@ -125,15 +125,75 @@ $$
 
 ### DP Refresh: Bellman Ford for shortest distance
 
-> Shortest distance between ane 2 vertices in a weighte dgraph (can handle negative weights)  
+> Shortest distance between and 2 vertices in a weighted graph (can handle negative weights)  
 
 $$d[v] = min_{u \in N(v)}(d[v], d[u] + d[u,v])$$
 
-This update in Bellman Ford is carried out for each vertext $v \in V(G)$ in each iteration and you iterate $|V| - 1$ times such that by then all optimal distances have been discovered. 
+This update in Bellman Ford is carried out for each vertext $v \in V(G)$ in each iteration and you iterate $\mid V\mid  - 1$ times such that by then all optimal distances have been discovered. 
 
 > Bellman Equation
 
-$$V(s) = e[R_{t+1} + \gamma V(S_{t+1}) | S_t = s]$$
+$$V(s) = e[R_{t+1} + \gamma V(S_{t+1}) \mid  S_t = s]$$
+
+### Solving the Bellman Equation for MRPs
+
+$$\begin{aligned} 
+V &= R + \gamma PV \\
+\implies R &= V - \gamma PV \\
+&= V(1 - \gamma P) \\
+\implies V &= R(1 - \gamma PV)^{-1} \quad \text{matrix inversion}\\
+\end{aligned}
+$$
+
+Bellman equation for MRPs is thus linear and solvable $O(n^3)$. 
+> - Evaluating rewards is solvable via this linear equation however <u>maximising</u> rewards is another thing altogether and more complex. 
+> - While matrix inversion is computationally expensive, there exist iterative methods for large MRPs such as Dynamic Programming (lecture 3), Monte Carlo sim/eval, Temporal Difference learning
+
+★ All of these are building blocks for what we are really looking to model and solve: decision making.
+
+### Markov Decision Process (MDP)
+
+→ MRP with decisions  
+→ We spoke of sampled transitions and state sequences but attached no agency to the agent's behaviour. Random sampling is not decision making. There was no explicit modeling of decisions / actions. 
+→ MDP is a tuple $(S,P,A,R,\gamma)$ where,  
+$\rightarrow S: \text{finite set of States}$  
+$\rightarrow A: \text{finite set of Actions}$  
+$\rightarrow P_{ss'}^{a}: \text{state transition probability matrix} \quad P_{ss'}^{a} = P[S_{t+1} = s' \mid  S_t = s, A_t = a]$  
+$\rightarrow R_s^a: \text{Reward function} \quad R_s^a = E[R_{t+1} \mid  S_t = s, A_t = a]$        
+$\rightarrow \gamma: \text{discount factor} \quad \gamma \in [0,1]$
+
+Now in order to make decisions, we need a way to formally capture the choice of actions.  
+★ Policy
+
+> A policy $\pi$ is a distribution over actions given states. (stochastic policy)
+
+$$\pi(a\mid s) = P[A_t = a \mid  S_t = s]$$
+
+→ Policy defines the behaviour of an agent.  
+→ Remember: given the Markov property, MDP actions depend on the current state (not the history).   
+$\implies$ As all that matters is the "current" state, the fact that it is timestep "t" is irrelevant. The State captures all that needs to be captured.  
+
+$$A_t \sim \pi(\cdot \mid s), \quad \forall t > 0$$
+$$\pi(a\mid s) = P[A_t = a \mid  S_t = s], \quad \forall t > 0$$
+
+### MDP → MRP → MP
+
+Given an MDP = $(S,P,A,R,\gamma)$ <u>and</u> a policy $\pi$,  
+- the policy lets you draw a sequence of states via actions (actions take you from one state to the next so a sequence of actions draws a sequance of states).  
+- the state sequence so obtained, $S_1, S_2, ...$ is a Markov Process $(S,P^{\pi})$. 
+     - here the state sequence defines the set of actions you are going to follow, i.e. a process. 
+- the state and reward sequence $S_1, R_1, S_2, R_2, ...$ is a Markov Reward Process $(S,P^{\pi}, R^{\pi}, \gamma)$ defined by the policy $\pi$. Where:
+     - $\displaystyle P_{ss'}^{\pi} = \sum_{a \in \mathcal{A}} \pi(a \mid s) P_{ss'}^a$
+     - $\displaystyle R_{s}^{\pi} = \sum_{a \in \mathcal{A}} \pi(a \mid s) R_{s}^a$
+- These two above capture the average dynamics. Averaged across all that can be done given the policy, the reward and state transition probability function are created. 
+
+> This way you can always "flatten" an MDP → MRP → MP given a policy. 
+
+> Why do rewards not feature in the policy formulation for rewards are what you are after? 
+- As the state captures all you need to know of future state evolution, and as rewards lie in the future or the past, it is the current / present state which the policy considers for optimal next actions.  
+- The way you pick the ideal action and the way you finetune your policy are deeply dependent on return, expected reward. So the reward is implicit and the goal but not available for decision making itself.  
+
+
 
 
 
