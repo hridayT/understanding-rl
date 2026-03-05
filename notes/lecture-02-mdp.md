@@ -193,10 +193,42 @@ Given an MDP = $(S,P,A,R,\gamma)$ <u>and</u> a policy $\pi$,
 - As the state captures all you need to know of future state evolution, and as rewards lie in the future or the past, it is the current / present state which the policy considers for optimal next actions.  
 - The way you pick the ideal action and the way you finetune your policy are deeply dependent on return, expected reward. So the reward is implicit and the goal but not available for decision making itself.  
 
+### State and Action Value Functions (v and q) | Given a Policy
 
+State-value function $v_{\pi}(s)$ of an MDP is the expected return starting from state $s$ and following policy $\pi$. 
 
+$$v_{\pi}(s) = E_{\pi}[G_t \mid S_t = s], \quad \text{expectation when we sample all actions according to the policy}$$
 
+Action-value function $q_{\pi}(s,a)$ is the expected return from state $s$, taking action $a$, and then following policy $\pi$.  
 
+$$q_{\pi}(s,a) = E_{\pi}[G_t \mid S_t = s, A_t = a]$$
 
+$\rightarrow$ a lot like state value apart from the immediate action conditional which defines that first lookahead in the action from state s.
 
+> Optimising an MDP is optimizing Q. 
+
+### Decomposing the state and action value functions as per the Bellman Equation
+
+$$v_{\pi}(s) = E_{\pi}[R_{t+1} + \gamma v_{\pi}(S_{t+1}) \mid  S_t = s]$$
+$$q_{\pi}(s,a) = E_{\pi}[R_{t+1} + \gamma a_{\pi}(S_{t+1}, A_t+1) \mid  S_t = s, A_t = a]$$
+
+★ Follow policy $\pi$ from there onwards.  
+
+> How do $v_{\pi}(s)$ and $q_{\pi}(s,a)$ relate to one another?  
+
+- $q_{\pi}(s,a)$ is really the value of each action from state $s$ & is thus a component of all future value.  
+- $s \mapsto v_{\pi}(s) \xrightarrow{a} q_{\pi}(s,a), \; \forall a \in A$  
+- $$\implies \boxed{v_{\pi}(s) = \sum_{a \in A} \pi (a \mid s) \; q_{\pi}(s,a)}$$
+
+$q_{\pi}(s,a)$: "q-value" / "action value"
+
+★ Now remember that you do not control the env. You choose your actions and the env emits rewards & states / observations.  
+
+→ $q_{\pi}(s,a)$ tells us the value of taking action $a$ at state $s$. However, in our MDP it is the state transition probability function $P_{ss'}^a$ and Reward function $R_x^a$ which step in once you take an action. 
+
+$q_{\pi}(s,a) \xrightarrow{R_s^a \; P_{ss'}^a} v_{\pi}(s'), \; \forall a \in A$  
+
+$$\implies \boxed{q_{\pi}(s,a) = R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a v_{\pi}(s')}$$
+
+$$\implies v_{\pi}(s) \xrightarrow{a \; \pi(a \mid s)} \; q_{\pi}(s,a) \; \xrightarrow{R_s^a \; P_{ss'}^a} \; v_{\pi}(s'), \; \forall a \in A$$
 
