@@ -218,17 +218,70 @@ $$q_{\pi}(s,a) = E_{\pi}[R_{t+1} + \gamma a_{\pi}(S_{t+1}, A_t+1) \mid  S_t = s,
 
 - $q_{\pi}(s,a)$ is really the value of each action from state $s$ & is thus a component of all future value.  
 - $s \mapsto v_{\pi}(s) \xrightarrow{a} q_{\pi}(s,a), \; \forall a \in A$  
-- $$\implies \boxed{v_{\pi}(s) = \sum_{a \in A} \pi (a \mid s) \; q_{\pi}(s,a)}$$
+$$\implies \boxed{v_{\pi}(s) = \sum_{a \in A} \pi (a \mid s) \; q_{\pi}(s,a)}$$
 
 $q_{\pi}(s,a)$: "q-value" / "action value"
 
 ★ Now remember that you do not control the env. You choose your actions and the env emits rewards & states / observations.  
 
-→ $q_{\pi}(s,a)$ tells us the value of taking action $a$ at state $s$. However, in our MDP it is the state transition probability function $P_{ss'}^a$ and Reward function $R_x^a$ which step in once you take an action. 
+→ $q_{\pi}(s,a)$ tells us the value of taking action $a$ at state $s$. However, in our MDP it is the <u>**dynamics of the env**</u>, the state transition probability function $P_{ss'}^a$ and Reward function $R_x^a$ which step in once you take an action. 
 
-$q_{\pi}(s,a) \xrightarrow{R_s^a \; P_{ss'}^a} v_{\pi}(s'), \; \forall a \in A$  
+$q_{\pi}(s,a) \xrightarrow{R_s^a \; P_{ss'}^a} v_{\pi}(s'), \; \forall a \in A$    
 
 $$\implies \boxed{q_{\pi}(s,a) = R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a v_{\pi}(s')}$$
 
 $$\implies v_{\pi}(s) \xrightarrow{a \; \pi(a \mid s)} \; q_{\pi}(s,a) \; \xrightarrow{R_s^a \; P_{ss'}^a} \; v_{\pi}(s'), \; \forall a \in A$$
+
+### Bellman Expectation Equation
+
+> For the value function
+
+$$
+\begin{aligned}
+v_{\pi}(s) &= \sum_{a \in A} \pi (a \mid s) \; q_{\pi}(s,a) \\
+&= \sum_{a \in A} \pi (a \mid s) \left(R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a v_{\pi}(s')\right)
+\end{aligned}
+$$
+
+the same can be done for $Q_{\pi}(s,a)$.
+
+$$
+\begin{aligned}
+q_{\pi}(s,a) &= R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a v_{\pi}(s') \\
+&= R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a \sum_{a' \in A} \pi (a' \mid s') \; q_{\pi}(s',a')
+\end{aligned}
+$$
+
+★ These relate the state-value function and action-value / quality functions to themselves, allowing for recursivbe definitions and iterations for computation in the future. This is great. However what we are really after is understanding the best way to behave.  
+
+### Optimal Value Function
+
+> The optimal state-value function $v_*(s)$ is the maximum state-value function over all policies. 
+
+$$v_*(s) = \max_{\pi} v_{\pi}(s)$$
+
+> The optimal action-value function $q_*(s,a)$ is the maximum action-value function over all policies. 
+
+$$q_*(s,a) = \max_{\pi} q_{\pi}(s,a)$$
+
+$\rightarrow$ The optimal value function specifies the best possible performance in the MDP. 
+
+→ The MDP may be considered "solved" when we know the optimal value function $\implies$ we know the policy which maximises value/return. 
+→ Thus once you know $Q^*$ you are done! $q_*(s,a)$ tells you which action is optimal at each stage over all actions. 
+→ Solving an MDP is akin to solving for $q_*(s,a)$ or the best policy. 
+
+### Optimal Policy
+
+> The best possible way to behave in an MDP. 
+
+Define a partial ordering over the policy space:
+$$\pi > \pi' \quad \text{if} \quad v_{\pi}(s) \geq v_{\pi'}(s), \; \forall s \in S$$
+
+>Theorem
+
+For any MDP,  
+$\rightarrow \exists$ an optimal policy $\pi_* \ni \pi_* \geq \pi, \; \forall \pi$  
+$\rightarrow \forall \pi_*$ the optimal value function is achieved. $\quad v_{\pi_*}(s) = v_*(s)$  
+$\rightarrow$ All optimal policies achieve the optimal action-value function. $\quad q_{\pi_*}(s,a) = q_*(s,a)$  
+$\rightarrow$ There can be more than one optimal policy.  
 
