@@ -285,3 +285,60 @@ $\rightarrow \forall \pi_*$ the optimal value function is achieved. $\quad v_{\p
 $\rightarrow$ All optimal policies achieve the optimal action-value function. $\quad q_{\pi_*}(s,a) = q_*(s,a)$  
 $\rightarrow$ There can be more than one optimal policy.  
 
+As $q_*(s,a)$ represents the best policy, you can pick the optimal action prescribed by it at each state with probability 1. This gives you a deterministic optimal policy. 
+
+$$
+\pi_*(a \mid s) =
+\begin{cases}
+  1 & \text{if } a = \operatorname*{argmax}\limits_{a \in A} q_*(s,a) \\
+  0  & \text{otherwise}
+\end{cases}
+$$
+
+As an extension of the theorem above if each MDP has an optimal policy which achieves the optimal action-value function, it can also be said that for all MDPs, there exists a deterministic optimal policy (as defined above). 
+
+> If we know $q_*(s,a)$ we have the optimal policy. 
+
+Now how do you go about identifying / obtaining $q_*$? 
+
+### Bellman Optimality Equation
+
+$\rightarrow$ this is the equation people refer to when they speak of the Bellman equation. 
+
+★ The optimal value functions are recursively related via the bellman optimality equations. 
+
+$$v_*(s) = \max_a q_*(s,a)$$
+
+This is a one step lookahead maximization. As we are talking about the optimal action-value function we no longer have to average over the policy $\pi(a \mid s)$ as we can pick the optimal action at eact step for each state. 
+
+Here we can maximize over the actions as we, the agent, choose the action. What happens next, i.e. the reward and the state we transition into, is controlled by the env. 
+
+> The action which gets you into the optimal next state in terms of value / expected return. 
+
+$$q_*(s,a) = R_s^a + \gamma \sum_{s' \in S}P_{ss'}^a \; v_*(s')$$
+
+> We maximize over what we can control, average over what we can't to capture the governing dynamics of the env. We invoke the optimal value of each possible future state and average over it. 
+
+Substiuting $q_*(s,a)$ in the state-value functions's optimality equation:
+
+$$\boxed{v_*(s) = \max_a(R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a \; v_*(s'))}$$
+
+<u>Maximize over actions you can take & average over what the env might do.</u>
+
+And for $Q^*$
+
+$$\boxed{q_*(s,a) = R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a \max_{a'}(q_*(s',a'))}$$
+
+- The Bellman optimality equation is non-linear
+     - Max + expectation
+     - recursive
+- No closed form solution (such as the matrix inversion case) generally
+- Multiple iterative approaches exist
+     - Value iteration
+     - Policy iteration
+     - Q-learning
+
+Principle of optimality (will be formally introduced in Lecture 3) can be invoked as:
+- To maximize your score / reward, behave optimally in the next step & then for the future as well (the remainder of your trajectory).
+
+We now have the constructs needed to work through iterations and thus DP based optimizations of value, policy, Q.
