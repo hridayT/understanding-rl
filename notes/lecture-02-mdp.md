@@ -141,7 +141,7 @@ $$\begin{aligned}
 V &= R + \gamma PV \\
 \implies R &= V - \gamma PV \\
 &= V(1 - \gamma P) \\
-\implies V &= R(1 - \gamma PV)^{-1} \quad \text{matrix inversion}\\
+\implies V &= R(I - \gamma P)^{-1} \quad \text{matrix inversion}\\
 \end{aligned}
 $$
 
@@ -210,7 +210,7 @@ $\rightarrow$ a lot like state value apart from the immediate action conditional
 ### Decomposing the state and action value functions as per the Bellman Equation
 
 $$v_{\pi}(s) = E_{\pi}[R_{t+1} + \gamma v_{\pi}(S_{t+1}) \mid  S_t = s]$$
-$$q_{\pi}(s,a) = E_{\pi}[R_{t+1} + \gamma a_{\pi}(S_{t+1}, A_t+1) \mid  S_t = s, A_t = a]$$
+$$q_{\pi}(s,a) = E_{\pi}[R_{t+1} + \gamma q_{\pi}(S_{t+1}, A_{t+1}) \mid  S_t = s, A_t = a]$$
 
 ★ Follow policy $\pi$ from there onwards.  
 
